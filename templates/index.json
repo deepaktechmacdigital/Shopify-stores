@@ -97,12 +97,34 @@
             "client_name": "Priya Sharma",
             "client_location": "Bhopal, India"
           }
+        },
+        "testimonial_bDWg9N": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "review_text": "This product completely changed how I shop. Fast delivery, great quality, highly recommend!",
+            "image_link": "",
+            "client_name": "Priya Sharma",
+            "client_location": "Bhopal, India"
+          }
+        },
+        "testimonial_jE8ezA": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "review_text": "This product completely changed how I shop. Fast delivery, great quality, highly recommend!",
+            "image_link": "",
+            "client_name": "Priya Sharma",
+            "client_location": "Bhopal, India"
+          }
         }
       },
       "block_order": [
         "testimonial_GTjWB3",
         "testimonial_4wmgXp",
-        "testimonial_qda4dL"
+        "testimonial_qda4dL",
+        "testimonial_bDWg9N",
+        "testimonial_jE8ezA"
       ],
       "name": "Testimonials vs code",
       "settings": {
