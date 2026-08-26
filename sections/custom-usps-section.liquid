@@ -1,0 +1,53 @@
+<div class="page-width-desktop">
+  <div class="usps">
+    <h1 classs="custom_section_heading">{{ section.settings.custom_heading }}</h1>
+    <p>{{ section.settings.custom_content }}</p>
+    <button class="custom_button_usp"><a href="{{ section.settings.custom_button_link }}">{{ section.settings.custom_button_content }}</a></button>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "custom usps",
+  "settings": [
+    {
+      "id":"custom_heading",
+      "type":"text",
+      "label":"custom heading"
+    },
+    {
+      "id":"custom_content",
+      "type":"richtext",
+      "label":"custom containt"
+    },
+     {
+      "id":"custom_button_content",
+      "type":"richtext",
+      "label":"custom button"
+    },
+    {
+      "id":"custom_button_link",
+      "type":"url",
+      "label":"custom Link"
+    }
+  ],
+  "presets": [
+    {
+      "name":"custom usps"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .usps{
+    /* background:#d8d1d1 !important; */
+  }
+  button.custom_button_usp a {
+    text-decoration: none;
+    color: #FFF;
+    /* background: bisque; */
+}
+  button.custom_button_usp {
+    background: #000000;
+    border-radius: 7px;
+}
+</style>

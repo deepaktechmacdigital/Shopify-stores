@@ -1,0 +1,136 @@
+<div class="connect_main">
+  <div class="page-width">
+    <div class="connect-sub">
+      <div class="connect_main_boxs">
+         <div class="connect_left_side_main">
+           <h2 class="connect_"> HOW TO USE</h2>
+        <div class="connect_left_side">
+          <div class="connect_left_upper_image"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/4.png?v=1729850789" alt="no found"></div>
+          <div class="connect_left_upper_image"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/1.png?v=1729850789" alt="no found"></div>
+           <div class="connect_left_upper_image"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/3.png?v=1729850789" alt="no found"></div>
+          <div class="connect_left_upper_image"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/2.png?v=1729850789" alt="no found"></div>
+        </div>
+           </div>
+         <div class="connect_right_side_main">
+           <h2 class="connect_"> <span class="connect_cust">CONNECT</span> WITH US</h2>
+        <div class="connect_right_side">
+            <div class="swiper mySwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/1_924f5f2a-2ce3-43f3-88eb-73db1483e943.png?v=1729850853" alt="no found"></div>
+                <div class="swiper-slide"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/3_cb7dfc65-945c-4b3c-89a7-6546a7c6e0df.png?v=1729850806" alt="no found"></div>
+                 <div class="swiper-slide"><img src="https://cdn.shopify.com/s/files/1/0667/0041/0932/files/2_0f3272bf-1622-4bed-a0aa-12683d1bca27.png?v=1729850805" alt="no found"></div>
+              </div>
+            </div>
+        </div>
+             </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Connect Us",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Connect Us"
+      }
+    ]
+  }
+{% endschema %}
+
+
+<style>
+.connect_main {
+    width: 100%;
+    position: relative;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+span.connect_cust {
+    color: blue;
+}
+.connect_left_side_main {
+    width: 50%;
+}
+h2.connect_ {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    padding: 20px 0px;
+}
+.swiper.swiper-cards {
+    overflow: hidden !important;
+}
+.connect_left_side {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+}
+.connect_left_upper_image img {
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+}
+.connect_left_side {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 10px;
+}
+.connect_left_upper_image img {
+    width: 100%;
+    height: 100%;
+        vertical-align: middle;
+}
+
+.connect_left_upper_image {
+    border-radius: 30px;
+    overflow: hidden;
+
+    width: 49%;
+}
+  .connect_right_side {
+    width: 100%;
+}
+  .connect-sub .swiper-slide img {
+    width: 48%;
+    border-radius: 4%;
+}
+.connect_main_boxs {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.connect-sub {
+    width: 100%;
+    position: relative;
+}
+ {% comment %} .connect-sub .swiper-slide.swiper-slide-next {
+    transform:  translate3d(calc(7.25% - 720px), 0px, -100px) rotateZ(12deg) scale(1) !important;
+}  {% endcomment %}
+.connect-sub  .swiper-slide.swiper-slide-prev {
+    transform: translate3d(calc(-7.25% + 0px), 0px, -100px) rotateZ(-12deg) scale(1)!important;
+}
+.connect-sub .swiper-slide.swiper-slide-next {
+    transform: translate3d(calc(-68.75% - 720px), 0px, -100px) rotateZ(12deg) scale(1) !important;
+}
+.connect_right_side_main {
+    width: 50%;
+    padding-top: 20px;
+}
+.connect_right_side_main .swiper-slide {
+    text-align: center;
+}
+</style> 
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      effect: "cards",
+      grabCursor: true,
+    });
+  </script>

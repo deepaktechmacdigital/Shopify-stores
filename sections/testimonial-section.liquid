@@ -1,0 +1,204 @@
+<div class="testimonial_main">
+  <div class="page-width">
+    <div class="tetimonial-sub">
+      <div class="testomonial_heading"><h1>{{ section.settings.testomial_heading }}</h1></div>
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+          <div class="swiper-slide">
+            <div class="testimonial_all_main">
+              <div class="review_name">
+                <h3>{{ block.settings.review_heading }}</h3>
+              </div>
+              <div class="review_star">
+                {% assign stars = block.settings.review_star %}
+               {% for star in (1..stars) %} 
+                 <span>
+                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" stroke="#fbd23c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                 </span>
+              {% endfor %}
+              </div>
+              <div class="review_content">
+                <p class="content">{{ block.settings.review_content }}</p>
+              </div>
+              <a href="javascript:void(0)" class="toggleBtn">Read More</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Testimonial-section",
+  "settings": [
+     {
+    "id": "testomial_heading",
+    "type":"text",
+    "label":"testimonial Heading Name"
+    },
+    {
+    "id": "testomial_title",
+    "type":"text",
+    "label":"testimonial client name"
+    },
+    {
+    "id": "testomial_stars",
+    "type":"image_picker",
+    "label":"testimonial Rating"
+    },
+    {
+    "id": "testomial_content",
+    "type":"richtext",
+    "label":"testimonial content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name":"Review",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "review_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "review_star",
+          "label": "Review Star"
+        },
+        {
+          "type": "richtext",
+          "id": "review_content",
+          "label": "Review Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+  {
+    "name": "Testimonial Section",
+  }
+]
+}
+{% endschema %}
+<style>
+  .page-width {
+  		max-width: 1200px;
+  		width: 100%;
+  		margin: 0 auto;
+  	}
+  	.testimonial_main {
+  		width: 100%;
+  		position: relative;
+  	}
+  	.tetimonial-sub {
+  		width: 100%;
+  		position: relative;
+  	}
+  	.testimonial_all_main {
+  		border: 1px solid #8f8f8f;
+  		border-radius: 10px;
+  		padding: 20px 10px;
+  	}
+  	.review_name h3 {
+  		margin: 0px 0px 10px 0px;
+  		font-size: 1.25rem;
+  		color: #065c2f;
+  	}
+  	.review_star {
+  		width: 22px;
+  		display: flex;
+  		align-items: center;
+  		gap: 8px;
+  	}
+  	.review_star img {
+  		width: 100%;
+  	}
+  	.review_content {
+  		color: #065c2f;
+  		margin-top: 10px;
+  	}
+  	.content {
+  		display: inline;
+  	}
+  	.toggleBtn {
+  		display: block;
+  		text-decoration: none;
+  		font-size: 15px;
+  		font-weight: 600;
+  		color: #065c2f;
+  		margin-top: 5px;
+  		cursor: pointer;
+  	}
+  .testomonial_heading h1 {
+    text-align: center;
+    color: #065c2f;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+     const contentElements = document.querySelectorAll(".content");  // Get all content elements
+     const toggleBtns = document.querySelectorAll(".toggleBtn");     // Get all toggle buttons
+
+     const maxWords = 10;  // Limit to 10 words
+
+  
+     function truncateText(text, wordLimit) {
+       const words = text.split(" ");
+       if (words.length > wordLimit) {
+         return words.slice(0, wordLimit).join(" ") + "...";
+       }
+       return text;
+     }
+
+     // Loop through each testimonial and add functionality
+     contentElements.forEach((contentElement, index) => {
+       const fullText = contentElement.innerHTML;  // Full text for each content element
+       let isTruncated = true;  // Initial state is truncated
+
+       // Initial display of truncated text
+       contentElement.innerHTML = truncateText(fullText, maxWords);
+
+       // Add event listener to the corresponding toggle button
+       toggleBtns[index].addEventListener("click", function() {
+         if (isTruncated) {
+           contentElement.innerHTML = fullText;  // Show full text
+           toggleBtns[index].innerHTML = "Read Less";  // Change button text to 'Read Less'
+         } else {
+           contentElement.innerHTML = truncateText(fullText, maxWords);  // Show truncated text
+           toggleBtns[index].innerHTML = "Read More";  // Change button text to 'Read More'
+         }
+         isTruncated = !isTruncated;  // Toggle the state
+       });
+     });
+   });
+
+  var swiper = new Swiper(".mySwiper", {
+         slidesPerView: 3,
+         spaceBetween: 30,
+         freeMode: true,
+         pagination: {
+           el: ".swiper-pagination",
+           clickable: true,
+         },  
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev"
+        },
+      });
+</script>
