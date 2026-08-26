@@ -2,7 +2,7 @@
 .testimonials-wrapper {
   width: 100%;
 }
- 
+
 .testimonials-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -22,11 +22,54 @@
   margin-bottom: 40px;
 }
 
-.testimonials-grid {
+/* ---------- Layout container: static grid OR slider ---------- */
+.testimonials-outer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonials-viewport {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Static mode (<= 3 testimonials): plain responsive grid */
+.is-static .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   text-align: left;
+}
+
+/* Slider mode (> 3 testimonials): flex track that translates */
+.is-slider .testimonials-viewport {
+  overflow: hidden;
+}
+
+.is-slider .testimonials-grid {
+  display: flex;
+  gap: 24px;
+  text-align: left;
+  transition: transform 0.35s ease;
+  will-change: transform;
+  cursor: grab;
+}
+
+.is-slider .testimonial-card {
+  flex: 0 0 calc((100% - 48px) / 3); /* 3 per view minus gaps */
+}
+
+@media (max-width: 999px) {
+  .is-slider .testimonial-card {
+    flex: 0 0 calc((100% - 24px) / 2);
+  }
+}
+
+@media (max-width: 699px) {
+  .is-slider .testimonial-card {
+    flex: 0 0 100%;
+  }
 }
 
 .testimonial-card {
@@ -38,6 +81,55 @@
   flex-direction: column;
   gap: 14px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+/* ---------- Slider nav arrows ---------- */
+.testimonial-nav {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.testimonial-nav:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.testimonial-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ---------- Dots pagination ---------- */
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.testimonial-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.testimonial-dot.is-active {
+  background: #333;
+  transform: scale(1.25);
 }
 
 /* Star rating - top */
@@ -55,12 +147,37 @@
 }
 
 /* Client review text - middle */
+.testimonial-text-wrap {
+  flex-grow: 1;
+}
+
 .testimonial-text {
   font-size: 15px;
   line-height: 1.6;
   color: #333;
   margin: 0;
-  flex-grow: 1;
+}
+
+.testimonial-text.is-clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.testimonial-toggle {
+  margin-top: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #1a73e8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.testimonial-toggle:hover {
+  text-decoration: underline;
 }
 
 /* Bottom row: small clickable image on left + name/location beside it */
@@ -128,6 +245,13 @@
 }
 </style>
 
+{% assign testimonial_blocks = section.blocks | where: 'type', 'testimonial' %}
+{% assign slide_count = testimonial_blocks.size %}
+{% assign is_slider = false %}
+{% if slide_count > 3 %}
+  {% assign is_slider = true %}
+{% endif %}
+
 <div class="testimonials-wrapper" style="background-color: {{ section.settings.bg_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="testimonials-container">
 
@@ -138,69 +262,246 @@
       <p class="testimonials-subheading">{{ section.settings.subheading }}</p>
     {% endif %}
 
-    <div class="testimonials-grid">
-      {% for block in section.blocks %}
-        {% if block.type == 'testimonial' %}
-          <div class="testimonial-card" {{ block.shopify_attributes }}>
+    <div
+      class="testimonials-outer {% if is_slider %}is-slider{% else %}is-static{% endif %}"
+      id="testimonials-{{ section.id }}"
+      data-slide-count="{{ slide_count }}"
+      data-is-slider="{{ is_slider }}"
+    >
 
-            <!-- Star Rating -->
-            <div class="testimonial-stars" aria-label="{{ block.settings.rating }} out of 5 stars">
-              {% for i in (1..5) %}
-                {% if i <= block.settings.rating %}
-                  <svg class="star filled" viewBox="0 0 24 24" width="18" height="18">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                {% else %}
-                  <svg class="star" viewBox="0 0 24 24" width="18" height="18">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                {% endif %}
-              {% endfor %}
-            </div>
+      {% if is_slider %}
+        <button type="button" class="testimonial-nav prev" aria-label="Previous testimonials">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      {% endif %}
 
-            <!-- Client Review Text -->
-            <p class="testimonial-text">&ldquo;{{ block.settings.review_text }}&rdquo;</p>
+      <div class="testimonials-viewport">
+        <div class="testimonials-grid">
+          {% for block in testimonial_blocks %}
+            <div class="testimonial-card" {{ block.shopify_attributes }}>
 
-            <!-- Bottom Row: Image (left) + Name/Location -->
-            <div class="testimonial-author">
-              {% if block.settings.image != blank %}
-                <a href="{{ block.settings.image_link | default: '#' }}" class="testimonial-avatar-link">
-                  <img
-                    src="{{ block.settings.image | image_url: width: 80 }}"
-                    alt="{{ block.settings.client_name | escape }}"
-                    class="testimonial-avatar"
-                    width="40"
-                    height="40"
-                    loading="lazy"
-                  >
-                </a>
-              {% else %}
-                <div class="testimonial-avatar testimonial-avatar-placeholder">
-                  {{ block.settings.client_name | slice: 0, 1 }}
-                </div>
-              {% endif %}
-
-              <div class="testimonial-author-info">
-                {% if block.settings.client_name != blank %}
-                  <span class="testimonial-name">{{ block.settings.client_name }}</span>
-                {% endif %}
-                {% if block.settings.client_location != blank %}
-                  <span class="testimonial-location">{{ block.settings.client_location }}</span>
-                {% endif %}
+              <!-- Star Rating -->
+              <div class="testimonial-stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                {% for i in (1..5) %}
+                  {% if i <= block.settings.rating %}
+                    <svg class="star filled" viewBox="0 0 24 24" width="18" height="18">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  {% else %}
+                    <svg class="star" viewBox="0 0 24 24" width="18" height="18">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  {% endif %}
+                {% endfor %}
               </div>
-            </div>
 
-          </div>
-        {% endif %}
-      {% endfor %}
+              <!-- Client Review Text (with Read More / Read Less) -->
+              <div class="testimonial-text-wrap">
+                <p class="testimonial-text">&ldquo;{{ block.settings.review_text }}&rdquo;</p>
+                <button type="button" class="testimonial-toggle" data-state="more" hidden>Read More</button>
+              </div>
+
+              <!-- Bottom Row: Image (left) + Name/Location -->
+              <div class="testimonial-author">
+                {% if block.settings.image != blank %}
+                  <a href="{{ block.settings.image_link | default: '#' }}" class="testimonial-avatar-link">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 80 }}"
+                      alt="{{ block.settings.client_name | escape }}"
+                      class="testimonial-avatar"
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    >
+                  </a>
+                {% else %}
+                  <div class="testimonial-avatar testimonial-avatar-placeholder">
+                    {{ block.settings.client_name | slice: 0, 1 }}
+                  </div>
+                {% endif %}
+
+                <div class="testimonial-author-info">
+                  {% if block.settings.client_name != blank %}
+                    <span class="testimonial-name">{{ block.settings.client_name }}</span>
+                  {% endif %}
+                  {% if block.settings.client_location != blank %}
+                    <span class="testimonial-location">{{ block.settings.client_location }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if is_slider %}
+        <button type="button" class="testimonial-nav next" aria-label="Next testimonials">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      {% endif %}
     </div>
+
+    {% if is_slider %}
+      <div class="testimonial-dots" role="tablist"></div>
+    {% endif %}
 
   </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.testimonials-outer').forEach(initTestimonialSection);
+});
+
+function initTestimonialSection(root) {
+  initReadMore(root);
+
+  var isSlider = root.dataset.isSlider === 'true';
+  if (isSlider) {
+    initSlider(root);
+  }
+}
+
+/* ---------- Read More / Read Less ---------- */
+function initReadMore(root) {
+  var texts = root.querySelectorAll('.testimonial-text');
+
+  texts.forEach(function (textEl) {
+    var wrap = textEl.closest('.testimonial-text-wrap');
+    var btn = wrap.querySelector('.testimonial-toggle');
+
+    // Clamp first, then measure overflow
+    textEl.classList.add('is-clamped');
+
+    // wait a tick for layout
+    requestAnimationFrame(function () {
+      var isOverflowing = textEl.scrollHeight > textEl.clientHeight + 2;
+
+      if (isOverflowing) {
+        btn.hidden = false;
+      } else {
+        textEl.classList.remove('is-clamped');
+      }
+    });
+
+    btn.addEventListener('click', function () {
+      var expanded = btn.dataset.state === 'less';
+      if (expanded) {
+        textEl.classList.add('is-clamped');
+        btn.textContent = 'Read More';
+        btn.dataset.state = 'more';
+      } else {
+        textEl.classList.remove('is-clamped');
+        btn.textContent = 'Read Less';
+        btn.dataset.state = 'less';
+      }
+    });
+  });
+}
+
+/* ---------- Slider (only when > 3 testimonials) ---------- */
+function initSlider(root) {
+  var viewport = root.querySelector('.testimonials-viewport');
+  var track = root.querySelector('.testimonials-grid');
+  var cards = Array.prototype.slice.call(track.children);
+  var prevBtn = root.querySelector('.testimonial-nav.prev');
+  var nextBtn = root.querySelector('.testimonial-nav.next');
+  var dotsWrap = root.parentElement.querySelector('.testimonial-dots');
+
+  var perView = getPerView();
+  var index = 0;
+  var maxIndex = Math.max(cards.length - perView, 0);
+
+  function getPerView() {
+    var w = window.innerWidth;
+    if (w < 700) return 1;
+    if (w < 1000) return 2;
+    return 3;
+  }
+
+  function buildDots() {
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = '';
+    var dotCount = maxIndex + 1;
+    for (var i = 0; i < dotCount; i++) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'testimonial-dot';
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.addEventListener('click', function (idx) {
+        return function () {
+          index = idx;
+          update();
+        };
+      }(i));
+      dotsWrap.appendChild(dot);
+    }
+  }
+
+  function update() {
+    var cardWidth = cards[0].getBoundingClientRect().width;
+    var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0);
+    var offset = (cardWidth + gap) * index;
+    track.style.transform = 'translateX(-' + offset + 'px)';
+
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = index >= maxIndex;
+
+    if (dotsWrap) {
+      Array.prototype.forEach.call(dotsWrap.children, function (dot, i) {
+        dot.classList.toggle('is-active', i === index);
+      });
+    }
+  }
+
+  function goPrev() {
+    index = Math.max(index - 1, 0);
+    update();
+  }
+
+  function goNext() {
+    index = Math.min(index + 1, maxIndex);
+    update();
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', goPrev);
+  if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+  // Touch / drag swipe support
+  var startX = 0;
+  var isDragging = false;
+
+  viewport.addEventListener('pointerdown', function (e) {
+    isDragging = true;
+    startX = e.clientX;
+  });
+  viewport.addEventListener('pointerup', function (e) {
+    if (!isDragging) return;
+    isDragging = false;
+    var diff = e.clientX - startX;
+    if (diff > 40) goPrev();
+    if (diff < -40) goNext();
+  });
+
+  function handleResize() {
+    perView = getPerView();
+    maxIndex = Math.max(cards.length - perView, 0);
+    index = Math.min(index, maxIndex);
+    buildDots();
+    update();
+  }
+
+  window.addEventListener('resize', handleResize);
+
+  buildDots();
+  update();
+}
+</script>
+
 {% schema %}
 {
-  "name": "Testimonials vs code Deepak",
+  "name": "Testimonials vs code",
   "tag": "section",
   "class": "section-testimonials",
   "settings": [
@@ -291,7 +592,7 @@
   ],
   "presets": [
     {
-      "name": "Testimonials vs code Deepak",
+      "name": "Testimonials vs code",
       "blocks": [
         { "type": "testimonial" },
         { "type": "testimonial" },
