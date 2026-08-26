@@ -71,7 +71,7 @@
           "type": "testimonial",
           "settings": {
             "rating": 5,
-            "review_text": "This product completely changed how I shop. Fast delivery, great quality, highly recommend!",
+            "review_text": "This product completely changed how I shop. Fast delivery, great quality, highly recommend! This product completely changed how I shop. Fast delivery, great quality, highly recommend!This product completely changed how I shop. Fast delivery, great quality, highly recommend!This product completely changed how I shop. Fast delivery, great quality, highly recommend!",
             "image": "shopify://shop_images/86638artboard_2__1__jpg.jpg",
             "image_link": "",
             "client_name": "Priya Sharma",
@@ -108,7 +108,7 @@
       "settings": {
         "heading": "What our customers say",
         "subheading": "Real reviews from real customers",
-        "bg_color": "#FAFAFA",
+        "bg_color": "#fafafa",
         "padding_top": 36,
         "padding_bottom": 36
       }
