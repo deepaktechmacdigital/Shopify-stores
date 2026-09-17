@@ -1,4 +1,4 @@
-{%- liquid
+{% comment %}start BSS Commerce Hide Price{% endcomment %}{% capture bss_lock_check %}{% render 'bss-lock-condition', scope: 'subject', subject: section.settings.product, variable: 'transparent' %}{% endcapture %}{% if bss_lock_check contains 'true' %}{% render 'bss-hide-product-design', section: 'sections/featured-product.liquid', subject: section.settings.product %}{% continue %}{% endif %}{% comment %}end BSS Commerce Hide Price{% endcomment %}{%- liquid
   assign product = section.settings.product
   if product == null
     assign placeholder = true
@@ -144,7 +144,7 @@
                   {%- endif -%}
                   {%- unless placeholder -%}
                     <div {{ block.shopify_attributes }}>
-                      {%- form 'product', product -%}
+                      {% comment %} BSS Lock Begin Hide Add To Cart {% endcomment %} {% capture bss_lock_check %} {% render 'bss-lock-condition', scope: 'subject', subject: product, subject_parent: product, variable: 'price', get_content: true, bss_lock_action: 'bss_hide_atc' %} {% endcapture %} {% if bss_lock_check contains 'bss-hide-atc' %} {{ bss_lock_check }} {% endif %} {% comment %} BSS Lock End Hide Add To Cart {% endcomment %}{%- form 'product', product -%}
                         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                         {{ form | payment_terms }}
                       {%- endform -%}
@@ -478,7 +478,7 @@
   -%}
 
   <script type="application/ld+json">
-    {{ product | structured_data }}
+    {% comment %}Start Bsscommerce HPOGS{% endcomment %}{% capture bss_lock_check %}{% render 'bss-lock-condition', scope: 'subject', subject: product, subject_parent: product, variable: 'hpogg' %}{% endcapture %}{% capture product_schema %}{{ product | structured_data }}{% endcapture %}{% render 'bss-lock-hpogs', product: product, product_schema: product_schema, bss_lock_check: bss_lock_check %}{% comment %}End Bsscommerce HPOGS{% endcomment %}
   </script>
 
   {% if product.media.size > 0 %}
